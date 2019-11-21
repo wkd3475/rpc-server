@@ -7,13 +7,13 @@ import (
 	"os"
 )
 
-type Calc int // RPC 서버에 등록하기 위해 임의의 타입으로 정의
+type Request int
 
-type Args struct { // 매개변수
+type Args struct {
 	Root string
 }
 
-type Reply struct { // 리턴값
+type Reply struct {
 	Files []string
 }
 
@@ -35,7 +35,7 @@ func OSReadDir(root string) ([]string, error) {
 	return files, nil
 }
 
-func (c *Calc) Ls(args *Args, reply *Reply) error {
+func (c *Request) Ls(args *Args, reply *Reply) error {
 	var (
 		files []string
 		err   error
@@ -52,7 +52,7 @@ func (c *Calc) Ls(args *Args, reply *Reply) error {
 }
 
 func main() {
-	rpc.Register(new(Calc))               // Calc 타입의 인스턴스를 생성하여 RPC 서버에 등록
+	rpc.Register(new(Request))            // Request 타입의 인스턴스를 생성하여 RPC 서버에 등록
 	ln, err := net.Listen("tcp", ":6000") // TCP 프로토콜에 6000번 포트로 연결을 받음
 	if err != nil {
 		fmt.Println(err)
